@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stress Assessment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="../static/css/main.css" rel="stylesheet">
+    <link href="../static/css/form.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Display Flash Messages (Errors/Info) -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    
+    {% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+    {% endif %}
+    <!-- End Flash Messages -->
+    
+    <!-- Header Section with Enhanced Title -->
+    <section id="title" class="gradient-background header-section">
+      <div class="container-fluid px-4">
+        <div class="heading row align-items-center">
+          <div class="col-lg-6 px-5 mb-5 mb-lg-0">
+            <h1 class="app-title">Sleep & Health Detection App</h1>
+            <p class="app-description">Assess your stress levels and get personalized recommendations to improve your health and wellbeing.</p>
+            <p class="app-description">Please kindly fill out our form here, or learn more about stress below!</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+              <button type="button" class="btn btn-outline-light btn-lg px-4" onclick="document.getElementById('learn-more').scrollIntoView({behavior: 'smooth'});">
+                Learn More
+              </button>
+            </div>
+          </div>
+          
+          <!-- Form Section -->
+          <div class="col-lg-6">
+            <div class="form-container">
+              <form id="assessmentForm" method="POST" action="{{url_for('home')}}">
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                  <div class="progress-top">
+                    <div class="progress-text">Question</div>
+                    <div id="progressText" class="progress-text">1/10</div>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                  </div>
+                </div>
+                
+                <!-- Navigation Dots -->
+                <div class="nav-dots"></div>
+                
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                  <button type="button" id="prevButton" class="nav-button prev-button" style="display:none;">
+                    <i class="bi bi-arrow-up"></i>
+                  </button>
+                  <button type="button" id="nextButton" class="nav-button next-button">
+                    <i class="bi bi-arrow-down"></i>
+                  </button>
+                  <button type="submit" id="submitButton" class="nav-button submit-button">
+                    <i class="bi bi-check-circle"></i> &nbsp;Predict
+                  </button>
+                </div>
+                
+                <!-- Form Footer with Keyboard Shortcuts -->
+                <div class="form-footer">
+                  <div class="keyboard-shortcuts">
+                    <div class="shortcut">
+                      <span class="shortcut-key">Enter</span> Continue
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Gender Field -->
+                <div class="form-field">
+                  <div class="form-question">What is your gender?</div>
+                  <div class="radio-group">
+                    <label class="radio-container">
+                      <input type="radio" name="a" value="0" required>
+                      <span class="radio-label">Female</span>
+                    </label>
+                    <label class="radio-container">
+                      <input type="radio" name="a" value="1" required>
+                      <span class="radio-label">Male</span>
+                    </label>
+                  </div>
+                  <div class="validation-message">Please select your gender.</div>
+                </div>
+                
+                <!-- Age Field -->
+                <div class="form-field">
+                  <div class="form-question">How old are you?</div>
+                  <input type="number" id="b" name="b" class="form-input" placeholder="Enter your age in years" min="18" max="100" required>
+                  <div class="validation-message">Please enter a valid age between 18 and 100.</div>
+                </div>
+                
+                <!-- Occupation Field -->
+                <div class="form-field">
+                  <div class="form-question">What is your occupation?</div>
+                  <select id="c" name="c" class="form-select" required>
+                    <option value="" selected disabled>Select your occupation</option>
+                    <option value="0">Scientist</option>
+                    <option value="1">Doctor</option>
+                    <option value="2">Accountant</option>
+                    <option value="3">Teacher</option>
+                    <option value="4">Manager</option>
+                    <option value="5">Engineer</option>
+                    <option value="6">Sales Representative</option>
+                    <option value="7">Salesperson</option>
+                    <option value="8">Lawyer</option>
+                    <option value="9">Software Engineer</option>
+                    <option value="10">Nurse</option>
+                  </select>
+                  <div class="validation-message">Please select your occupation.</div>
+                </div>
+                
+                <!-- Activity Level Field -->
+                <div class="form-field">
+                  <div class="form-question">What is your activity level?</div>
+                  <div class="radio-group">
+                    <label class="radio-container">
+                      <input type="radio" name="d" value="1" required>
+                      <span class="radio-label">Low</span>
+                      <span class="radio-description">Less than 30 min/week</span>
+                    </label>
+                    <label class="radio-container">
+                      <input type="radio" name="d" value="2" required>
+                      <span class="radio-label">Medium</span>
+                      <span class="radio-description">30-150 min/week</span>
+                    </label>
+                    <label class="radio-container">
+                      <input type="radio" name="d" value="3" required>
+                      <span class="radio-label">High</span>
+                      <span class="radio-description">150+ min/week</span>
+                    </label>
+                  </div>
+                  <div class="validation-message">Please select your activity level.</div>
+                </div>
+                
+                <!-- Sleep Quality Field -->
+                <div class="form-field">
+                  <div class="form-question">How would you assess your sleep quality?</div>
+                  <input type="range" id="e" name="e" class="custom-range" min="1" max="10" step="1" required>
+                  <div class="sleep-quality"><strong>6</strong></div>
+                  <span class="form-help">1 = Very poor quality</span>
+                  <span class="form-help">5 = Moderate quality</span>
+                  <span class="form-help">10 = Excellent quality</span>
+                </div>
+                
+                <!-- Sleep Duration Field -->
+                <div class="form-field">
+                  <div class="form-question">How many hours do you sleep per night on average?</div>
+                  <input type="range" id="f" name="f" class="custom-range" min="2" max="12" step="0.5" required>
+                  <div class="sleep-duration"><strong>7</strong></div>
+                </div>
+                
+                <!-- BMI Category Field -->
+                <div class="form-field">
+                  <div class="form-question">What is your BMI category?</div>
+                  <div class="radio-group">
+                    <label class="radio-container">
+                      <input type="radio" name="g" value="1" required>
+                      <span class="radio-label">Underweight</span>
+                      <span class="radio-description">BMI < 18.5</span>
+                    </label>
+                    <label class="radio-container">
+                      <input type="radio" name="g" value="2" required>
+                      <span class="radio-label">Normal</span>
+                      <span class="radio-description">BMI 18.5-25</span>
+                    </label>
+                    <label class="radio-container">
+                      <input type="radio" name="g" value="3" required>
+                      <span class="radio-label">Overweight</span>
+                      <span class="radio-description">BMI > 25</span>
+                    </label>
+                  </div>
+                  <div class="validation-message">Please select your BMI category.</div>
+                </div>
+                
+                <!-- Heart Rate Field -->
+                <div class="form-field">
+                  <div class="form-question">What is your resting heart rate?</div>
+                  <input type="number" id="h" name="h" class="form-input" placeholder="Enter beats per minute" min="40" max="200" required>
+                  <div class="validation-message">Please enter a valid heart rate between 40-200 bpm.</div>
+                  <span class="form-help">Normal resting heart rate is typically 60-100 bpm</span>
+                </div>
+                
+                <!-- Daily Steps Field -->
+                <div class="form-field">
+                  <div class="form-question">How many steps do you take daily on average?</div>
+                  <input type="number" id="i" name="i" class="form-input" placeholder="Enter average daily steps" min="500" max="30000" required>
+                  <div class="validation-message">Please enter a valid step count.</div>
+                  <span class="form-help">The recommended daily step count is 10,000 steps</span>
+                </div>
+                
+                <!-- Blood Pressure Field -->
+                <div class="form-field">
+                  <div class="form-question">What is your systolic blood pressure?</div>
+                  <input type="number" id="j" name="j" class="form-input" placeholder="Enter systolic value (mmHg)" min="80" max="200" required>
+                  <span class="form-help">Normal systolic pressure is typically below 120 mmHg</span>
+                  <div class="validation-message">Please enter a valid blood pressure reading.</div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learn More Section -->
+    <section id="learn-more" class="learn-more-section">
+        <div class="container-fluid">
+            <div class="row mb-4">
+                <div class="col-lg-12 text-center">
+                    <h2>Understanding Stress Levels</h2>
+                    <p class="lead">Click on each stress level category to learn more about the factors that influence stress.</p>
+                </div>
+            </div>
+            
+            <div class="stress-levels-container">
+                <div class="stress-level-row">
+                    <!-- Low Stress Level -->
+                    <div class="stress-level-card level-low" onclick="showStressInfo('low')">
+                        <div class="level-indicator"></div>
+                        <h4>Low Stress (1-2)</h4>
+                        <p>Indicates excellent stress management and healthy lifestyle habits.</p>
+                    </div>
+                    
+                    <!-- Medium Stress Level -->
+                    <div class="stress-level-card level-medium" onclick="showStressInfo('medium')">
+                        <div class="level-indicator"></div>
+                        <h4>Medium Stress (3-5)</h4>
+                        <p>Suggests moderate stress that may be impacting some areas of life.</p>
+                    </div>
+                    
+                    <!-- High Stress Level -->
+                    <div class="stress-level-card level-high" onclick="showStressInfo('high')">
+                        <div class="level-indicator"></div>
+                        <h4>High Stress (6-8)</h4>
+                        <p>Indicates significant stress that requires attention and lifestyle changes.</p>
+                    </div>
+                </div>
+                
+                <!-- Info panels that appear on click - below the cards -->
+                <div id="panel-low" class="info-panel-container panel-low">
+                    <h4>Low Stress Level (1-2) Details</h4>
+                    <p>People experiencing low stress levels generally have well-balanced lifestyles with good coping mechanisms.</p>
+                    
+                    <div class="criteria-list">
+                        <div class="criteria-item">
+                            <strong>Sleep</strong>
+                            7-9 hours of quality sleep with consistent bedtime routines. Rarely experiences insomnia or sleep disruptions, and wakes feeling refreshed.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Activity</strong>
+                            Regular physical activity (150+ minutes/week) with a variety of exercises. Maintains good energy levels throughout the day without significant fatigue.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Diet</strong>
+                            Balanced nutrition with regular meals and minimal processed foods. Maintains proper hydration and rarely indulges in stress-induced eating.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Mindfulness</strong>
+                            Daily relaxation practices and effective emotion management. Has good work-life balance and can easily find time for hobbies and social connections.
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="panel-medium" class="info-panel-container panel-medium">
+                    <h4>Medium Stress Level (3-5) Details</h4>
+                    <p>People with moderate stress levels may be experiencing pressure in certain aspects of life while maintaining stability in others.</p>
+                    
+                    <div class="criteria-list">
+                        <div class="criteria-item">
+                            <strong>Sleep</strong>
+                            6-7 hours with occasional disturbances or inconsistent patterns. May have trouble falling asleep some nights and occasionally feels tired during the day.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Activity</strong>
+                            Inconsistent exercise (60-150 min/week) with some sedentary periods. May skip workouts when busy or stressed and experiences fluctuating energy levels.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Diet</strong>
+                            Occasional unhealthy food choices and irregular meal timing. Sometimes skips meals when busy or may overeat in response to stress.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Mindfulness</strong>
+                            Sporadic relaxation practices with some difficulty managing emotions. Work-life balance is sometimes compromised, and may experience periodic worry.
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="panel-high" class="info-panel-container panel-high">
+                    <h4>High Stress Level (6-8) Details</h4>
+                    <p>People with high stress levels are experiencing significant pressure that is affecting multiple aspects of their health and wellbeing.</p>
+                    
+                    <div class="criteria-list">
+                        <div class="criteria-item">
+                            <strong>Sleep</strong>
+                            Less than 6 hours with frequent insomnia or oversleeping. Sleep is often interrupted, and chronic fatigue is common throughout the day.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Activity</strong>
+                            Minimal physical activity (under 60 min/week) or sedentary lifestyle. Often feels too tired or lacks motivation for exercise, with consistently low energy.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Diet</strong>
+                            Poor nutrition with irregular eating, skipped meals, or stress eating. May rely heavily on caffeine, alcohol, or unhealthy foods to cope with stress.
+                        </div>
+                        <div class="criteria-item">
+                            <strong>Mindfulness</strong>
+                            Rare or no relaxation practices with frequent mood changes. Work-life balance is severely compromised with persistent worry, anxiety, or irritability.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="../static/js/form.js"></script>
+    <script>
+        // Function to show stress level information panel
+        function showStressInfo(level) {
+            // Hide all panels first
+            document.querySelectorAll('.info-panel-container').forEach(panel => {
+                panel.style.display = 'none';
+            });
+            
+            // Remove active class from all cards
+            document.querySelectorAll('.stress-level-card').forEach(card => {
+                card.classList.remove('active-card');
+            });
+            
+            // Show the selected panel and highlight its card
+            const selectedPanel = document.getElementById('panel-' + level);
+            selectedPanel.style.display = 'block';
+            
+            // Add active class to the clicked card
+            const activeCards = document.querySelectorAll('.level-' + level);
+            activeCards.forEach(card => {
+                card.classList.add('active-card');
+            });
+        }
+        
+        // Show low stress panel by default when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            showStressInfo('low');
+        });
+    </script>
+</body>
+</html>

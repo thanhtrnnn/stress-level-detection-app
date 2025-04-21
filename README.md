@@ -3,15 +3,15 @@
 A web application for stress assessment and health recommendations, built with Flask and machine learning. Users fill out a Typeform-like interactive form, and the app predicts their stress level and provides personalized advice.
 
 ## Features
-- **Visually interactive form**
+- **Visually interactive form**<br/>
   One-question-at-a-time, keyboard/mouse navigation, progress bar, and validation.
-- **ML-powered stress prediction**
+- **ML-powered stress prediction**<br/>
   Uses a trained model (`model.pkl`) to predict stress level from user input.
-- **Personalized advice**
+- **Personalized advice**<br/>
   Integrates with Gemini API to generate actionable advice in four categories: Sleep, Activity, Diet, Mindfulness.
-- **Dashboard**
+- **Dashboard**<br/>
   View recent responses and stress levels.
-- **MongoDB integration**
+- **MongoDB integration**<br/>
   Stores user responses and predictions.
 
 ## Technologies Used

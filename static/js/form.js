@@ -492,4 +492,36 @@ document.addEventListener('DOMContentLoaded', function() {
             goToPrevField();
         }
     });
+
+    // BMI Info Card functionality
+    setupBmiInfoCard();
+    
+    function setupBmiInfoCard() {
+        const bmiInfoTerm = document.getElementById('bmi-info-term');
+        const bmiInfoCard = document.getElementById('bmi-info-card');
+        const closeButton = bmiInfoCard.querySelector('.info-card-close');
+        
+        // Show BMI info card when clicking on the BMI term
+        if (bmiInfoTerm) {
+            bmiInfoTerm.addEventListener('click', function(e) {
+                e.stopPropagation();
+                bmiInfoCard.classList.add('active');
+            });
+        }
+        
+        // Close info card when clicking the close button
+        if (closeButton) {
+            closeButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                bmiInfoCard.classList.remove('active');
+            });
+        }
+        
+        // Close info card when clicking elsewhere on the page
+        document.addEventListener('click', function(e) {
+            if (bmiInfoCard && !bmiInfoCard.contains(e.target) && e.target !== bmiInfoTerm) {
+                bmiInfoCard.classList.remove('active');
+            }
+        });
+    }
 });

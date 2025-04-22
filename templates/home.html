@@ -4,6 +4,7 @@
     <title>Stress Assessment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700" rel="stylesheet">
     <link href="../static/css/main.css" rel="stylesheet">
     <link href="../static/css/form.css" rel="stylesheet">
 </head>
@@ -32,9 +33,9 @@
         <div class="heading row align-items-center">
           <div class="col-lg-6 px-5 mb-5 mb-lg-0">
             <h1 class="app-title">Sleep & Health Detection App</h1>
-            <p class="app-description">Assess your stress levels and get personalized recommendations to improve your health and wellbeing.</p>
-            <p class="app-description">Please kindly fill out our form here, or learn more about stress below!</p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <p class="app-description">Assess your stress level and get personalized recommendations to improve your health and wellbeing.</p>
+            <p class="app-description">Please kindly fill out our form here, or learn more about all the stress level ranges below!</p>
+            <div class="home-buttons gap-2">
               <button type="button" class="btn btn-light btn-lg px-4 me-md-3" onclick="document.getElementById('learn-more').scrollIntoView({behavior: 'smooth'});">
                 Learn More
               </button> 
@@ -161,7 +162,7 @@
                 <div class="form-field">
                   <div class="form-question">How would you assess your sleep quality?</div>
                   <input type="range" id="e" name="e" class="custom-range" min="1" max="10" step="1" required>
-                  <div class="sleep-quality"><strong>6</strong></div>
+                  <div class="sleep-quality" style="font-size: x-large;"><strong>6</strong></div>
                   <span class="form-help">1 = Very poor quality</span>
                   <span class="form-help">5 = Moderate quality</span>
                   <span class="form-help">10 = Excellent quality</span>
@@ -171,12 +172,22 @@
                 <div class="form-field">
                   <div class="form-question">How many hours do you sleep per night on average?</div>
                   <input type="range" id="f" name="f" class="custom-range" min="2" max="12" step="0.5" required>
-                  <div class="sleep-duration"><strong>7</strong></div>
+                  <div class="sleep-duration" style="font-size: x-large;"><strong>7</strong></div>
                 </div>
                 
                 <!-- BMI Category Field -->
                 <div class="form-field">
-                  <div class="form-question">What is your BMI category?</div>
+                  <div class="form-question">What is your <span class="info-term" id="bmi-info-term">BMI</span> category?</div>
+                  <!-- Position BMI info card right after the term -->
+                  <div id="bmi-info-card" class="info-card">
+                    <div class="info-card-title">
+                      Body Mass Index (BMI) Information
+                    </div>
+                    <p>BMI is a measure of body fat based on height and weight that applies to adult men and women.</p>
+                    <div class="bmi-formula">
+                      <strong>BMI Formula:</strong> weight (kg) / height (m)<sup>2</sup>
+                    </div>
+                  </div>
                   <div class="radio-group">
                     <label class="radio-container">
                       <input type="radio" name="g" value="1" required>
@@ -202,7 +213,8 @@
                   <div class="form-question">What is your resting heart rate?</div>
                   <input type="number" id="h" name="h" class="form-input" placeholder="Enter beats per minute" min="40" max="200" required>
                   <div class="validation-message">Please enter a valid heart rate between 40-200 bpm.</div>
-                  <span class="form-help">Normal resting heart rate is typically 60-100 bpm</span>
+                  <span class="form-help">Normal resting heart rate is typically 60-100 bpm.</span>
+                  <span class="form-help">Please refer to your medical ID for a reliable number.</span>
                 </div>
                 
                 <!-- Daily Steps Field -->
@@ -217,8 +229,9 @@
                 <div class="form-field">
                   <div class="form-question">What is your systolic blood pressure?</div>
                   <input type="number" id="j" name="j" class="form-input" placeholder="Enter systolic value (mmHg)" min="80" max="200" required>
-                  <span class="form-help">Normal systolic pressure is typically below 120 mmHg</span>
                   <div class="validation-message">Please enter a valid blood pressure reading.</div>
+                  <span class="form-help">Normal systolic pressure is typically below 120 mmHg</span>
+                  <span class="form-help">Please refer to your medical ID for a reliable number.</span>
                 </div>
               </form>
             </div>

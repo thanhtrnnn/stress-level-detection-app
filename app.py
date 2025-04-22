@@ -66,6 +66,13 @@ def home():
                         form_data['activity_level'], form_data['blood_pressure']]])
         # Make prediction
         pred = model.predict(arr)
+        # Convert 8-point scale to 1-5 scale
+        if 3 <= pred[0] <= 6:
+            pred[0] -= 2
+        elif pred[0] > 6:
+            pred[0] -= 3
+        else:
+            pred[0] = 1
         
         # Build a prompt that includes all form data and the predicted stress level
         prompt = (
@@ -76,7 +83,7 @@ def home():
             f"BMI category (1: Underweight, 2: Normal, 3: Overweight): {form_data['bmi_category']}, "
             f"Heart Rate (bpm): {form_data['heart_rate']}, Daily Steps: {form_data['daily_steps']}, "
             f"Systolic Blood Pressure (mmHg): {form_data['blood_pressure']}. "
-            f"The predicted stress level is {pred[0]} out of 8. "
+            f"The predicted stress level is {pred[0]} out of 5. "
             "Provide personalized advice to help the user manage stress, divided into exactly 4 separate categories: "
             "1. SLEEP: advice about sleep habits and quality "
             "2. ACTIVITY: advice about physical activity and exercise "

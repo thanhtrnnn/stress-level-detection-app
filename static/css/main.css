@@ -156,6 +156,10 @@ body { font-family: 'Montserrat', sans-serif; }
         display: flex;
         justify-content: center;
     }
+
+    .home-buttons button {
+        flex-basis: 100%;
+    }
 }
 
 @media (max-width: 576px) {

@@ -15,7 +15,7 @@
             <div class="scale-line"></div>
             {% set user_level = data[0]|float %}
             
-            {% for level in range(1, 9) %}
+            {% for level in range(1, 6) %}
                 <div class="scale-marker marker-{{ level }} {% if level == (user_level|round|int) %}current-marker{% endif %}" 
                      onclick="showLevelInfo({{ level }})">
                     {{ level }}
@@ -37,31 +37,16 @@
             
             <div id="panel-3" class="scale-info-panel panel-medium">
                 <h5>Medium (3)</h5>
-                <p>Low-Medium stress that's manageable but starting to impact some lifestyle factors. Consider small adjustments to habits.</p>
+                <p>Medium stress with noticeable impact on daily life. Several lifestyle factors need attention to prevent further escalation.</p>
             </div>
             
-            <div id="panel-4" class="scale-info-panel panel-medium">
-                <h5>Medium (4)</h5>
-                <p>Medium stress with noticeable impact on daily life. Your body is showing signs of stress that should be addressed.</p>
-            </div>
-            
-            <div id="panel-5" class="scale-info-panel panel-medium">
-                <h5>Medium-High (5)</h5>
-                <p>Your stress is increasing to concerning levels. Several lifestyle factors need attention to prevent further escalation.</p>
-            </div>
-            
-            <div id="panel-6" class="scale-info-panel panel-high">
-                <h5>High (6)</h5>
-                <p>Significant stress affecting multiple aspects of health. Immediate lifestyle adjustments are recommended.</p>
-            </div>
-            
-            <div id="panel-7" class="scale-info-panel panel-high">
-                <h5>Very High (7)</h5>
+            <div id="panel-4" class="scale-info-panel panel-high">
+                <h5>High (4)</h5>
                 <p>Serious stress indicators present. Your physical and mental health are likely suffering from sustained stress.</p>
             </div>
             
-            <div id="panel-8" class="scale-info-panel panel-high">
-                <h5>Severe (8)</h5>
+            <div id="panel-5" class="scale-info-panel panel-high">
+                <h5>Severe (5)</h5>
                 <p>Extreme stress requiring immediate attention. Consider consulting a healthcare professional alongside lifestyle changes.</p>
             </div>
         </div>
@@ -70,14 +55,14 @@
         <div class="text-center mb-4">
             <h3>Your current stress level: <span class="
                 {% if user_level <= 2 %}text-success
-                {% elif user_level <= 5 %}text-warning
+                {% elif user_level == 3 %}text-warning
                 {% else %}text-danger{% endif %}">
-                {{ "%.0f"|format(user_level) }}/8
+                {{ "%.0f"|format(user_level) }}/5
             </span></h3>
             <p>
                 {% if user_level <= 2 %}
                     Your stress level is low. Keep up the good work!
-                {% elif user_level <= 5 %}
+                {% elif user_level == 3 %}
                     Your stress level is moderate. Some targeted improvements could help.
                 {% else %}
                     Your stress level is high. Consider implementing the suggestions below.
@@ -161,9 +146,9 @@
             // Highlight appropriate card in Learn More section
             let categoryToHighlight;
             
-            if (userLevel <= 2) {
+            if (userLevel <= 3) {
                 categoryToHighlight = document.querySelector('.level-low');
-            } else if (userLevel <= 5) {
+            } else if (userLevel == 3) {
                 categoryToHighlight = document.querySelector('.level-medium');
             } else {
                 categoryToHighlight = document.querySelector('.level-high');

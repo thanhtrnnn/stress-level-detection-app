@@ -21,6 +21,7 @@ client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 # --- Connect to MongoDB ---
 uri = os.getenv("MONGODB_URI")
+print(f"Connecting to MongoDB at {uri}")
 mongo_client = MongoClient(uri, server_api=ServerApi('1'))
 db = mongo_client["stress_monitor_db"]
 responses_collection = db["form_responses"]  # Collection to store user responses

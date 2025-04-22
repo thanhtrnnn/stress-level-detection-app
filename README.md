@@ -1,4 +1,4 @@
-# Stress & Health Detection App
+# Stress Level Detection App
 
 A web application for stress assessment and health recommendations, built with Flask and machine learning. Users fill out a Typeform-like interactive form, and the app predicts their stress level and provides personalized advice.
 
@@ -40,5 +40,58 @@ A web application for stress assessment and health recommendations, built with F
 ## Credits
 - @DrakePhamta for the pre-trained model.
 - UI inspired by Typeform.
-- Bootstrap ultilization including layouts, spacing and icons. 
+- Bootstrap ultilization including layouts, spacing and icons.
+
+# Heroku Deployment Instructions
+
+## 1. Prerequisites
+- You have a [Heroku](https://heroku.com) account and the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed.
+- You have a [MongoDB Atlas](https://www.mongodb.com/atlas) cluster set up.
+
+## 2. MongoDB Atlas Connection String
+1. Go to your MongoDB Atlas dashboard.
+2. Click "Connect" > "Connect your application".
+3. Copy the connection string. It looks like:
+
+```
+mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+```
+
+4. Replace `<username>` and `<password>` with your Atlas database user credentials.
+5. Add your current IP or 0.0.0.0/0 to the Atlas Network Access whitelist.
+
+## 3. Prepare Your App for Heroku
+- Make sure you have these files in your project root:
+  - `Procfile`
+  - `requirements.txt`
+  - `runtime.txt`
+  - `app.py` (main entry point)
+  - `model.pkl` (your ML model)
+
+## 4. Deploy to Heroku
+```sh
+heroku login
+heroku create your-app-name
+heroku buildpacks:set heroku/python
+heroku addons:create mongolab:sandbox  # (optional, if you want Heroku MongoDB)
+git add .
+git commit -m "Prepare for Heroku deployment"
+git push heroku main  # or 'git push heroku master' if using master branch
+```
+
+## 5. Set Environment Variables on Heroku
+```sh
+heroku config:set MONGODB_URI="mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority"
+heroku config:set GEMINI_API_KEY="your-gemini-api-key"
+```
+
+## 6. Open Your App
+```sh
+heroku open
+```
+
+## Notes
+- Your Flask app will be served by Gunicorn via the `Procfile`.
+- All secrets (API keys, DB URIs) should be set via Heroku config vars, not in code.
+- If you update your code, just commit and push to Heroku again.
 

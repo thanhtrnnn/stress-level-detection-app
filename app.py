@@ -7,6 +7,7 @@ import traceback # For detailed error logging
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from datetime import datetime
+from pymongo.server_api import ServerApi
 
 # Load environment variables from .env file
 load_dotenv()
@@ -19,9 +20,17 @@ model = pickle.load(open('model.pkl', 'rb'))
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 # --- Connect to MongoDB ---
-mongo_client = MongoClient(os.getenv("MONGODB_URI"))
+uri = os.getenv("MONGODB_URI")
+mongo_client = MongoClient(uri, server_api=ServerApi('1'))
 db = mongo_client["stress_monitor_db"]
 responses_collection = db["form_responses"]  # Collection to store user responses
+
+# Send a ping to confirm a successful connection
+try:
+    mongo_client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
 
 # --- Initialize Flask App ---
 app = Flask(__name__)

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, jsonify
+from flask import Flask, render_template, request, flash, redirect, url_for
 import pickle
 import numpy as np
 import os, json
@@ -61,10 +61,9 @@ def home():
 
         # Create the NumPy array with numerical data
         arr = np.array([[form_data['gender'], form_data['age'], form_data['occupation'],
-                        form_data['activity_level'], form_data['sleep_quality'], form_data['sleep_duration'],
+                        form_data['sleep_duration'], form_data['sleep_quality'], 
                         form_data['bmi_category'], form_data['heart_rate'], form_data['daily_steps'],
-                        form_data['blood_pressure']]])
-
+                        form_data['activity_level'], form_data['blood_pressure']]])
         # Make prediction
         pred = model.predict(arr)
         

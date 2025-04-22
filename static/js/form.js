@@ -68,11 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Create navigation dots
+    // Create navigation dots (skip welcome field at index 0)
     function createNavDots() {
         if (navDotsContainer) {
             navDotsContainer.innerHTML = '';
-            formFields.forEach((_, index) => {
+            // Skip the first field (welcome)
+            for (let index = 1; index < formFields.length; index++) {
                 const dot = document.createElement('div');
                 dot.className = 'nav-dot';
                 dot.setAttribute('data-index', index);
@@ -83,45 +84,54 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 navDotsContainer.appendChild(dot);
-            });
+            }
         }
     }
     
-    // Update the navigation dots
+    // Update the navigation dots (skip welcome field at index 0)
     function updateNavDots() {
         if (navDotsContainer) {
             const dots = navDotsContainer.querySelectorAll('.nav-dot');
-            dots.forEach((dot, index) => {
+            // Dots correspond to formFields[1..]
+            dots.forEach((dot, i) => {
+                const fieldIndex = i + 1;
                 dot.classList.remove('active', 'completed');
-                if (index === currentField) {
+                if (fieldIndex === currentField) {
                     dot.classList.add('active');
-                } else if (completedFields.has(index)) {
+                } else if (completedFields.has(fieldIndex)) {
                     dot.classList.add('completed');
                 }
             });
         }
     }
     
-    // Set up keyboard navigation
+    // Set up keyboard navigation (jQuery version for form submit)
     function setupKeyboardNavigation() {
-        document.addEventListener('keydown', function(event) {
+        $(document).on('keydown', function(event) {
             // Only handle keyboard navigation if not typing in an input
-            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') {
+            if ($(document.activeElement).is('input, select')) {
                 if (event.key === 'Enter') {
-                    event.preventDefault(); // Prevent form submission
+                    event.preventDefault();
                     if (validateCurrentField()) {
-                        goToNextField();
+                        if (currentField === formFields.length - 1) {
+                            $('#assessmentForm').submit();
+                        } else {
+                            goToNextField();
+                        }
                     }
                 }
                 return;
             }
-            
             switch (event.key) {
                 case 'ArrowDown':
                 case 'Enter':
                     event.preventDefault();
                     if (validateCurrentField()) {
-                        goToNextField();
+                        if (currentField === formFields.length - 1) {
+                            $('#assessmentForm').submit();
+                        } else {
+                            goToNextField();
+                        }
                     }
                     break;
                 case 'ArrowUp':
@@ -242,17 +252,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 firstInput.focus();
             }, 300);
         }
+
+        // Update shortcut text to 'Submit' on last field, 'Continue' otherwise (jQuery version)
+        if ($('.shortcut').length) {
+            if (index === formFields.length - 1) {
+                $('.shortcut').html('<span class="shortcut-key">Enter</span> Submit');
+            } else {
+                $('.shortcut').html('<span class="shortcut-key">Enter</span> Continue');
+            }
+        }
     }
     
     // Function to update progress bar and text
     function updateProgress() {
         if (progressFill) {
-            const progress = ((currentField + 1) / formFields.length) * 100;
+            const progress = (currentField / (formFields.length - 1)) * 100;
             progressFill.style.width = `${progress}%`;
         }
         
         if (progressText) {
-            progressText.textContent = `${currentField + 1}/${formFields.length}`;
+            progressText.textContent = `${currentField}/${formFields.length - 1}`;
         }
     }
     
